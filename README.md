@@ -22,7 +22,6 @@ Add a **Copenhagen.yml** file to your project root. Add one top-level node for e
       user: ubuntu
       remote_path: /var/www/test
       git_remote: origin
-      git_branch: master
       
     production:
       target: staging-script

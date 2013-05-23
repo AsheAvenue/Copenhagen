@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require 'copenhagen'
+
+deploy = Copenhagen::Deploy.new
+deploy.dip

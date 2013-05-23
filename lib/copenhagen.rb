@@ -76,7 +76,7 @@ module Copenhagen
         end
         
       else
-        puts "Copenhagen requires pem, host, remote_path, git_remote, and git_branch values to be set in Copenhagen.yml"
+        puts "Copenhagen requires pem, host, remote_path, and git_remote values to be set in Copenhagen.yml"
       end
     end
     

@@ -23,10 +23,10 @@ module Copenhagen
         #get the deployment target. Currently supported: 'heroku', 'staging-pull', 'staging-script'
         if config['target'] == 'heroku'
           heroku config
-        elsif config['target'] == 'staging-pull'
-          stagingpull config
-        elsif config['target'] == 'staging-script'
-          stagingscript config
+        elsif config['target'] == 'remote-pull'
+          remotepull config
+        elsif config['target'] == 'remote-script'
+          remotescript config
         end
         
       end
@@ -47,7 +47,7 @@ module Copenhagen
       end
     end
     
-    def stagingpull(config)
+    def remotepull(config)
       pem = config['pem']
       host = config['host']
       user = config['user']
@@ -55,7 +55,7 @@ module Copenhagen
       git_remote = config['git_remote']
       
       if(pem && host && user && remote_path && git_remote)
-        puts "SSHing into staging and pulling code"
+        puts "SSHing into remote server and pulling code"
         
         #get the text of the pem
         pem_text = get_pem_text(pem)
@@ -72,6 +72,8 @@ module Copenhagen
           puts "Connected to host: #{host}"
           
           puts "Changing to project dir and pulling #{git_remote}/#{git_branch}"
+          puts ssh.exec!("cd #{remote_path} && git fetch")
+          puts ssh.exec!("cd #{remote_path} && git checkout #{git_branch}")
           puts ssh.exec!("cd #{remote_path} && git pull #{git_remote} #{git_branch}")
         end
         
@@ -80,7 +82,7 @@ module Copenhagen
       end
     end
     
-    def stagingscript(config)
+    def remotescript(config)
       pem = config['pem']
       host = config['host']
       user = config['user']
@@ -88,7 +90,7 @@ module Copenhagen
       deploy_script = config['deploy_script']
       
       if(pem && host && deploy_user && deploy_script)
-        puts "SSHing into staging and running script"
+        puts "SSHing into remote server and running script"
         
         #get the text of the pem
         pem_text = get_pem_text(pem)

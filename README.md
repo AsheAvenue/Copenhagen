@@ -39,7 +39,7 @@ or
 
     $ dip production
     
-In addition, if deploying to an environment using the **staging-pull** target, an optional branch can be passed in. If the branch isn't passed in, the current branch is used. Example:
+In addition, if deploying to an environment using the **staging-pull** target, an optional branch can be passed in on the command line. If the branch isn't passed in, the current branch is used. Example:
 
     $ dip staging feature123
 

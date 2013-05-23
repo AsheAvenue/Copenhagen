@@ -1,4 +1,4 @@
-Copyright (c) 2013 Tim Boisvert
+Copyright (c) 2013 Ashe Avenue
 
 MIT License
 

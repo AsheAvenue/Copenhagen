@@ -63,7 +63,7 @@ module Copenhagen
         #get the git branch
         git_branch = ARGV[1]
         if !git_branch
-          git_branch = `git branch`
+          git_branch = `git branch | grep "*"`
           git_branch.gsub!("* ","")
         end
         

@@ -1,3 +1,5 @@
+![copenhagen](/img/logo.png)
+
 Copenhagen is an inflexible, opinionated deployment framework for developers or orgs not willing or able to modify their deployment process. Rather than require you to change your process, Copenhagen wraps your existing process, whatever it may be.
 
 ## Installation

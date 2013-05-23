@@ -16,7 +16,7 @@ Add a **Copenhagen.yml** file to your project root. Add one top-level node for e
       git_branch: master
       
     staging:
-      target: staging-pull
+      target: remote-pull
       pem: /Users/tim/.pems/whatever.pem
       host: ec2-1-2-3-4.compute-1.amazonaws.com
       user: ubuntu
@@ -24,7 +24,7 @@ Add a **Copenhagen.yml** file to your project root. Add one top-level node for e
       git_remote: origin
       
     production:
-      target: staging-script
+      target: remote-script
       pem: /Users/tim/.pems/whatever.pem
       host: ec2-1-2-3-4.compute-1.amazonaws.com
       user: ubuntu
@@ -39,9 +39,9 @@ or
 
     $ dip production
     
-In addition, if deploying to an environment using the **staging-pull** target, an optional branch can be passed in on the command line. If the branch isn't passed in, the current branch is used. Example:
+In addition, if deploying to an environment using the **remote-pull** target, an optional branch can be passed in on the command line. If the branch isn't passed in, the current branch is used. For example, if you're on branch "test123", the following command will tell the remote server to checkout and pull the "feature123" branch:
 
-    $ dip staging feature123
+    $ dip staging feature123 
 
 ##License
 

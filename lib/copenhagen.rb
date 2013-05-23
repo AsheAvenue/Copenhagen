@@ -1,6 +1,7 @@
 require "copenhagen/version"
 require 'yaml'
 require 'net/ssh'
+require 'git'
 
 module Copenhagen
   class Deploy
@@ -52,23 +53,26 @@ module Copenhagen
       user = config['user']
       remote_path = config['remote_path']
       git_remote = config['git_remote']
-      git_branch = config['git_branch']
       
-      if(pem && host && user && remote_path && git_remote && git_branch)
+      if(pem && host && user && remote_path && git_remote)
         puts "SSHing into staging and pulling code"
         
         #get the text of the pem
         pem_text = get_pem_text(pem)
         
+        #get the git branch
+        git_branch = ARGV[1]
+        if !git_branch
+          git_branch = `git branch`
+          git_branch.gsub!("* ","")
+        end
+        
         #ssh in
         Net::SSH.start(host, user, :key_data => pem_text, :keys_only => TRUE) do |ssh|
           puts "Connected to host: #{host}"
           
-          puts "Changing to project dir"
-          ssh.exec!("cd #{remote_path}")
-          
-          puts "Pulling from #{git_remote}/#{git_branch}"
-          puts ssh.exec!("git pull #{git_remote} #{git_branch}")
+          puts "Changing to project dir and pulling #{git_remote}/#{git_branch}"
+          puts ssh.exec!("cd #{remote_path} && git pull #{git_remote} #{git_branch}")
         end
         
       else

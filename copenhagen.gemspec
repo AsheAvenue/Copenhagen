@@ -16,4 +16,7 @@ Gem::Specification.new do |gem|
   gem.name          = "copenhagen"
   gem.require_paths = ["lib"]
   gem.version       = Copenhagen::VERSION
+
+  gem.add_dependency("net-ssh")
+  gem.add_dependency("git")
 end

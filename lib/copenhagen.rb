@@ -20,7 +20,7 @@ module Copenhagen
         #get the config for this environment
         config = yaml[environment]
 
-        #get the deployment target. Currently supported: 'heroku', 'staging-pull', 'staging-script'
+        #get the deployment target. Currently supported: 'heroku', 'remote-pull', 'remote-script'
         if config['target'] == 'heroku'
           heroku config
         elsif config['target'] == 'remote-pull'

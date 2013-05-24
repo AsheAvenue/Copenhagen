@@ -47,6 +47,6 @@ In addition, if deploying to an environment using the **remote-pull** target, an
 
 ##Finally...
 
-© 2013 Ashe Avenue. Created by <a href="http://twitter.com/timboisvert">Tim Boisvert</a> and Heath Beckett.
+© 2013 Ashe Avenue. Created by <a href="http://twitter.com/timboisvert">Tim Boisvert</a>.
 <br />
 Copenhagen is released under the <a href="http://opensource.org/licenses/MIT">MIT license</a>.

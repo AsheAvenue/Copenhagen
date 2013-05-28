@@ -98,12 +98,8 @@ module Copenhagen
         #ssh in
         Net::SSH.start(host, user, :key_data => pem_text, :keys_only => TRUE) do |ssh|
           puts "Connected to host: #{host}"
-          
-          puts "Changing to #{deploy_user}'s home dir"
-          ssh.exec!("cd /home/#{deploy_user}")
-          
-          puts "Running script: #{deploy_script}"
-          puts ssh.exec!("./#{deploy_script}")
+          puts "Changing to #{deploy_user}'s home dir and running script: #{deploy_script}"
+          puts ssh.exec!("cd /home/#{deploy_user} && sudo su - deploy -c ./#{deploy_script}")
         end
         
       else

@@ -25,6 +25,14 @@ Add a **Copenhagen.yml** file to your project root. Add one top-level node for e
       remote_path: /var/www/test
       git_remote: origin
       
+    staging2:
+      target: remote-pull-with-password
+      host: ec2-1-2-3-4.compute-1.amazonaws.com
+      user: ubuntu
+      password: Wh4t3v3r
+      remote_path: /var/www/test
+      git_remote: origin
+      
     production:
       target: remote-script
       pem: /Users/tim/.pems/whatever.pem
@@ -41,7 +49,7 @@ or
 
     $ dip production
     
-In addition, if deploying to an environment using the **remote-pull** target, an optional branch can be passed in on the command line. If the branch isn't passed in, the current branch is used. For example, if you're on branch "test123", the following command will tell the remote server to checkout and pull the "feature123" branch:
+In addition, if deploying to an environment using the **remote-pull** or **remote-pull-with-password** target, an optional branch can be passed in on the command line. If the branch isn't passed in, the current branch is used. For example, if you're on branch "test123", the following command will tell the remote server to checkout and pull the "feature123" branch:
 
     $ dip staging feature123 
 

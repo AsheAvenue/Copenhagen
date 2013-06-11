@@ -20,11 +20,13 @@ module Copenhagen
         #get the config for this environment
         config = yaml[environment]
 
-        #get the deployment target. Currently supported: 'heroku', 'remote-pull', 'remote-script'
+        #get the deployment target. Currently supported: 'heroku', 'remote-pull', 'remote-pull-with-password', 'remote-script'
         if config['target'] == 'heroku'
           heroku config
         elsif config['target'] == 'remote-pull'
           remotepull config
+        elsif config['target'] == 'remote-pull-with-password'
+          remotepullwithpassword config
         elsif config['target'] == 'remote-script'
           remotescript config
         end
@@ -53,6 +55,7 @@ module Copenhagen
       user = config['user']
       remote_path = config['remote_path']
       git_remote = config['git_remote']
+      git_branch = config['git_branch']
       
       if(pem && host && user && remote_path && git_remote)
         puts "SSHing into remote server and pulling code"
@@ -60,11 +63,13 @@ module Copenhagen
         #get the text of the pem
         pem_text = get_pem_text(pem)
         
-        #get the git branch
-        git_branch = ARGV[1]
+        #get the current git branch if the branch isn't in the yml 
         if !git_branch
-          git_branch = `git branch | grep "*"`
-          git_branch.gsub!("* ","")
+          git_branch = ARGV[1]
+          if !git_branch
+            git_branch = `git branch | grep "*"`
+            git_branch.gsub!("* ","")
+          end
         end
         
         #ssh in
@@ -79,6 +84,38 @@ module Copenhagen
         
       else
         puts "Copenhagen requires pem, host, remote_path, and git_remote values to be set in Copenhagen.yml"
+      end
+    end
+    
+    def remotepullwithpassword(config)
+      host = config['host']
+      user = config['user']
+      password = config['password']
+      remote_path = config['remote_path']
+      git_remote = config['git_remote']
+      
+      if(password && host && user && remote_path && git_remote)
+        puts "SSHing into remote server and pulling code"
+        
+        #get the git branch
+        git_branch = ARGV[1]
+        if !git_branch
+          git_branch = `git branch | grep "*"`
+          git_branch.gsub!("* ","")
+        end
+        
+        #ssh in
+        Net::SSH.start(host, user, :password => password) do |ssh|
+          puts "Connected to host: #{host}"
+          
+          puts "Changing to project dir and pulling #{git_remote}/#{git_branch}"
+          puts ssh.exec!("cd #{remote_path} && git fetch")
+          puts ssh.exec!("cd #{remote_path} && git checkout #{git_branch}")
+          puts ssh.exec!("cd #{remote_path} && git pull #{git_remote} #{git_branch}")
+        end
+        
+      else
+        puts "Copenhagen requires password, user, host, remote_path, and git_remote values to be set in Copenhagen.yml"
       end
     end
     

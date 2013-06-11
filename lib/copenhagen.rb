@@ -65,11 +65,8 @@ module Copenhagen
         
         #get the current git branch if the branch isn't in the yml 
         if !git_branch
-          git_branch = ARGV[1]
-          if !git_branch
-            git_branch = `git branch | grep "*"`
-            git_branch.gsub!("* ","")
-          end
+          git_branch = `git branch | grep "*"`
+          git_branch.gsub!("* ","")
         end
         
         #ssh in
@@ -93,12 +90,12 @@ module Copenhagen
       password = config['password']
       remote_path = config['remote_path']
       git_remote = config['git_remote']
+      git_branch = config['git_branch']
       
       if(password && host && user && remote_path && git_remote)
         puts "SSHing into remote server and pulling code"
         
-        #get the git branch
-        git_branch = ARGV[1]
+        #get the current git branch if the branch isn't in the yml 
         if !git_branch
           git_branch = `git branch | grep "*"`
           git_branch.gsub!("* ","")

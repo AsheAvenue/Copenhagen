@@ -42,7 +42,7 @@ module Copenhagen
       
       if(git_remote && git_branch)
         puts "Pushing to Heroku"
-        script = "git push #{git_remote} #{git_branch}"
+        script = "git push #{git_remote} #{git_branch}:master"
         exec script
       else
         puts "Copenhagen requires git_remote and git_branch values to be set in Copenhagen.yml"

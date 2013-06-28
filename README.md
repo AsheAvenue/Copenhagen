@@ -25,6 +25,7 @@ Add a **Copenhagen.yml** file to your project root. Add one top-level node for e
       remote_path: /var/www/test
       git_remote: origin
       git_branch: whatever (optional)
+      bundle: true
       
     staging2:
       target: remote-pull-with-password
@@ -34,6 +35,7 @@ Add a **Copenhagen.yml** file to your project root. Add one top-level node for e
       remote_path: /var/www/test
       git_remote: origin
       (current branch will be used)
+      migrate: true
       
     production:
       target: remote-script

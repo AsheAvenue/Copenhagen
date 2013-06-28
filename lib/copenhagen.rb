@@ -42,8 +42,7 @@ module Copenhagen
       
       if(git_remote && git_branch)
         puts "Pushing to Heroku"
-        script = "git push #{git_remote} #{git_branch}:master"
-        exec script
+        exec "git push #{git_remote} #{git_branch}:master"
       else
         puts "Copenhagen requires git_remote and git_branch values to be set in Copenhagen.yml"
       end
@@ -56,6 +55,8 @@ module Copenhagen
       remote_path = config['remote_path']
       git_remote = config['git_remote']
       git_branch = config['git_branch']
+      bundle = config['bundle']
+      migrate = config['migrate']
       
       if(pem && host && user && remote_path && git_remote)
         puts "SSHing into remote server and pulling code"
@@ -77,6 +78,55 @@ module Copenhagen
           puts ssh.exec!("cd #{remote_path} && git fetch")
           puts ssh.exec!("cd #{remote_path} && git checkout #{git_branch}")
           puts ssh.exec!("cd #{remote_path} && git pull #{git_remote} #{git_branch}")
+          
+          if bundle && bundle == 'true'
+            puts ssh.exec!("cd #{remote_path} && bundle install")
+          end      
+              
+          if migrate && migrate == 'true'
+            puts ssh.exec!("cd #{remote_path} && rake db:migrate")
+          end
+        end
+        
+      else
+        puts "Copenhagen requires pem, host, remote_path, and git_remote values to be set in Copenhagen.yml"
+      end
+    end
+    
+    def remotepullnoauth(config)
+      host = config['host']
+      user = config['user']
+      remote_path = config['remote_path']
+      git_remote = config['git_remote']
+      git_branch = config['git_branch']
+      bundle = config['bundle']
+      migrate = config['migrate']
+      
+      if(host && user && remote_path && git_remote)
+        puts "SSHing into remote server and pulling code"
+        
+        #get the current git branch if the branch isn't in the yml 
+        if !git_branch
+          git_branch = `git branch | grep "*"`
+          git_branch.gsub!("* ","")
+        end
+        
+        #ssh in
+        Net::SSH.start(host, user) do |ssh|
+          puts "Connected to host: #{host}"
+          
+          puts "Changing to project dir and pulling #{git_remote}/#{git_branch}"
+          puts ssh.exec!("cd #{remote_path} && git fetch")
+          puts ssh.exec!("cd #{remote_path} && git checkout #{git_branch}")
+          puts ssh.exec!("cd #{remote_path} && git pull #{git_remote} #{git_branch}")
+          
+          if bundle && bundle == 'true'
+            puts ssh.exec!("cd #{remote_path} && bundle install")
+          end      
+              
+          if migrate && migrate == 'true'
+            puts ssh.exec!("cd #{remote_path} && rake db:migrate")
+          end
         end
         
       else
@@ -91,6 +141,8 @@ module Copenhagen
       remote_path = config['remote_path']
       git_remote = config['git_remote']
       git_branch = config['git_branch']
+      bundle = config['bundle']
+      migrate = config['migrate']
       
       if(password && host && user && remote_path && git_remote)
         puts "SSHing into remote server and pulling code"
@@ -109,6 +161,14 @@ module Copenhagen
           puts ssh.exec!("cd #{remote_path} && git fetch")
           puts ssh.exec!("cd #{remote_path} && git checkout #{git_branch}")
           puts ssh.exec!("cd #{remote_path} && git pull #{git_remote} #{git_branch}")
+          
+          if bundle && bundle == 'true'
+            puts ssh.exec!("cd #{remote_path} && bundle install")
+          end      
+              
+          if migrate && migrate == 'true'
+            puts ssh.exec!("cd #{remote_path} && rake db:migrate")
+          end
         end
         
       else

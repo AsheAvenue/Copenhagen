@@ -26,6 +26,7 @@ Add a **Copenhagen.yml** file to your project root. Add one top-level node for e
       git_remote: origin
       git_branch: whatever (optional)
       bundle: true
+      touch: false (optional)
       
     staging2:
       target: remote-pull-with-password

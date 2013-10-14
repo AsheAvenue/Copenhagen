@@ -57,6 +57,7 @@ module Copenhagen
       git_branch = config['git_branch']
       bundle = config['bundle']
       migrate = config['migrate']
+      touch = config['touch']
       
       if(pem && host && user && remote_path && git_remote)
         puts "SSHing into remote server and pulling code"
@@ -85,6 +86,10 @@ module Copenhagen
               
           if migrate && migrate == 'true'
             puts ssh.exec!("cd #{remote_path} && rake db:migrate")
+          end
+          
+          if touch && touch == 'true'
+            puts ssh.exec!("cd #{remote_path} && touch tmp/restart.txt")
           end
         end
         
